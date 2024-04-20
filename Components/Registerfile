@@ -1,0 +1,33 @@
+`timescale 1ns / 1ps
+module Register_file(  input clk,
+							  input we, 
+							  input reset,
+							  input [1:0] ra1,
+							  input  ra2,
+							  input [2:0] wa,
+							  input [7:0] wd,
+							  output [7:0] rd1, 
+							  output [7:0] rd2); 
+                    
+                     
+reg [7:0] register [7:0];
+
+
+assign rd1 = register[ra1];
+assign rd2 = register[ra2];
+
+integer i;
+
+
+
+always @(posedge clk)
+begin
+    //register[0]=0;
+    if(reset) for(i = 0; i < 32; i = i + 1) register[i] = 8'd0;
+    else if (we)
+        //if(wa != 0)
+		  register[wa]= wd;
+    
+end
+
+endmodule    
