@@ -2,15 +2,18 @@
 module CPU(input clk,
            input reset,
 			  output [7:0] Programcounter,
-			  output [7:0] Instruction);
+			  output [7:0] Instruction,
+			  output [7:0] Result,
+			  output [2:0] WriteAddress);
                 
 wire [7:0] PC, Instr, ReadData, WriteData, AluResult;
 wire RegDst,RegWrite, ALUSrc, Jump, MemtoReg, PCSrc , Zero, MemWrite;
 wire [0:0] AluControl;
+wire [2:0] WriteReg;
    
 Datapath datapath(clk, reset, RegDst,RegWrite, ALUSrc,Jump,MemtoReg ,
                      PCSrc,AluControl,ReadData, Instr, PC, Zero, 
-                     WriteData,AluResult);
+                     WriteData,AluResult,WriteReg);
 
 
 Control_unit control_unit(Instr[7:6], Instr[0], Zero,MemtoReg,MemWrite,
@@ -22,5 +25,7 @@ Rom instr_memory(PC,Instr);
 
 assign Programcounter = PC;
 assign Instruction = Instr;
+assign Result = AluResult;
+assign WriteAddress = WriteReg;
 
 endmodule
