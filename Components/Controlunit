@@ -44,30 +44,7 @@ always @(*) begin
 	 
 	 
 	 
-	 /*
-         6'b000000: begin                          // R-type
-                    container <= 8'b11000000;        
-
-                    case (Func)
-                    6'b100000: AluControl <= 4'b0000;    // ADD
-						  6'b100001: AluControl <= 4'b0001;    // SUB
-						  endcase
-						  end
-						  
-			6'b001000: begin                          // ADDI
-                    container <= 8'b10100000;  
-                    AluControl <= 4'b0000; 
-                    end  
-						  
-			6'b000100: begin                          // BEQ
-                    container <= 8'b00010000;      
-                    AluControl <= 4'b0001; 
-                    end
-						  
-			6'b000010: begin                          // J
-						  container <= 8'b00000010;  
-						  AluControl <= 4'b0010; 
-					  end 		*/				  
+			  
 	endcase
 	
    {RegWrite,RegDst,ALUSrc,Branch,MemWrite,MemtoReg,Jump,B} = container;
