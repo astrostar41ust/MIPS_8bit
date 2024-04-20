@@ -1,0 +1,42 @@
+`timescale 1ns / 1ps
+module Datapath(input clk,
+                input reset,
+                input RegDst,
+                input RegWrite,
+                input ALUSrc,
+                input Jump,
+                input MemtoReg,
+                input PCSrc,
+					 input [0:0] AluControl,
+                input [7:0] ReadData,
+                input [7:0] Instr,
+                output [7:0] PC,
+                output ZeroFlag,
+                output [7:0] WriteData, 
+                output [7:0] AluResult);
+					 
+wire [7:0] extendedimmafter;
+wire [7:0] PCNext, PCplus, PCbeforeBranch, PCBranch;
+wire [7:0] extendedimm, MuxResult, Dataone, aluop2;
+wire [2:0]WriteReg;
+
+// PC 
+Dff #(8) pcregister(clk,reset, PC,PCNext);
+Adder #(8) pcadd(PC, 8'd1 ,PCplus);
+Adder #(8) pcaddsigned(extendedimmafter,PCplus,PCbeforeBranch);
+Mux2 #(8) branchmux(PCplus , PCbeforeBranch, PCSrc, PCBranch);
+Mux2 #(8) jumpmux(PCBranch, {PCplus[7:6],Instr[5:0]}, Jump, PCNext);
+
+// Register File 
+Register_file register_file(clk,RegWrite, reset, Instr[5:4], Instr[3], WriteReg, MuxResult, Dataone,WriteData); 
+Mux2 #(3) writeregmux({2'b0,Instr[3]},{1'b0,Instr[2:1]},RegDst, WriteReg);
+Mux2 #(8) resultmux(AluResult, ReadData, MemtoReg,MuxResult);
+
+// ALU
+Alu alu(Dataone, aluop2, AluControl, AluResult, ZeroFlag);
+Signext immextention({1'b0,Instr[2:0]},extendedimm);
+Mux2 #(8) aluop2mux(WriteData,extendedimm, ALUSrc, aluop2);
+
+
+endmodule
+
