@@ -1,0 +1,10 @@
+`timescale 1ns/1ns
+module Fulladder (input a, 
+						input b, 
+						input cin, 
+						output cout, 
+						output s);
+
+assign {cout,s}=a+b+cin;
+
+endmodule
