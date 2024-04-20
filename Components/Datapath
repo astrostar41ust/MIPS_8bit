@@ -13,12 +13,13 @@ module Datapath(input clk,
                 output [7:0] PC,
                 output ZeroFlag,
                 output [7:0] WriteData, 
-                output [7:0] AluResult);
+                output [7:0] AluResult,
+		output [2:0] WriteReg);
 					 
 wire [7:0] extendedimmafter;
 wire [7:0] PCNext, PCplus, PCbeforeBranch, PCBranch;
 wire [7:0] extendedimm, MuxResult, Dataone, aluop2;
-wire [2:0]WriteReg;
+//wire [2:0]WriteReg;
 
 // PC 
 Dff #(8) pcregister(clk,reset, PC,PCNext);
