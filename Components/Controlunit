@@ -1,0 +1,79 @@
+`timescale 1ns / 1ps
+module Control_unit (input [1:0] Opcode, 
+							input Func, 
+							input Zero,
+							output reg  MemtoReg,
+							output reg  MemWrite,
+							output reg  ALUSrc,
+							output reg  RegDst,
+							output reg  RegWrite,
+							output reg  Jump,
+							output PCSrc,
+							output reg  [0:0] AluControl
+							);
+			 
+reg [7:0] container;
+reg Branch,B;
+
+always @(*) begin 
+
+    case (Opcode) 
+	 
+			2'b00: begin                          // R-type
+                    container <= 8'b11000000;        
+                    case (Func)
+                    1'b0: AluControl <= 1'b0;    // ADD
+						  1'b1: AluControl <= 1'b1;    // SUB
+						  endcase
+						  end
+							  
+			2'b01: begin                          // ADDI
+                    container <= 8'b10100000;  
+                    AluControl <= 1'b0; 
+                    end  
+						  
+			2'b10: begin                          // BEQ
+                    container <= 8'b00010000;      
+                    AluControl <= 1'b1; 
+                    end
+						  
+			2'b11: begin                          // J
+						  container <= 8'b00000010;  
+						  AluControl <= 1'b0; 
+					  end 					  
+	 
+	 
+	 
+	 /*
+         6'b000000: begin                          // R-type
+                    container <= 8'b11000000;        
+
+                    case (Func)
+                    6'b100000: AluControl <= 4'b0000;    // ADD
+						  6'b100001: AluControl <= 4'b0001;    // SUB
+						  endcase
+						  end
+						  
+			6'b001000: begin                          // ADDI
+                    container <= 8'b10100000;  
+                    AluControl <= 4'b0000; 
+                    end  
+						  
+			6'b000100: begin                          // BEQ
+                    container <= 8'b00010000;      
+                    AluControl <= 4'b0001; 
+                    end
+						  
+			6'b000010: begin                          // J
+						  container <= 8'b00000010;  
+						  AluControl <= 4'b0010; 
+					  end 		*/				  
+	endcase
+	
+   {RegWrite,RegDst,ALUSrc,Branch,MemWrite,MemtoReg,Jump,B} = container;
+	
+end
+
+	assign PCSrc = Branch & (Zero ^ B);
+
+endmodule
