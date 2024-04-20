@@ -1,0 +1,22 @@
+`timescale 1ns/1ns
+
+module Rom(adr,dout);
+
+parameter depth =256;
+parameter bits = 8;
+parameter width = 8;
+
+
+input [bits-1:0] adr;
+output [width-1:0] dout;
+
+reg [width-1:0] instr_mem[depth-1:0];
+    
+initial
+    $readmemb("memfile.txt", instr_mem);
+    
+  assign dout= instr_mem[adr/1]; 
+
+
+
+endmodule
