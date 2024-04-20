@@ -1,0 +1,32 @@
+`timescale 1ns / 1ps
+module Ram(clk,we,adr,din,dout);
+
+parameter depth = 256;
+parameter bits = 8;
+parameter width = 8;
+
+input clk, we;
+input [bits-1:0] adr;
+input [width-1:0] din;
+
+output [width-1:0] dout;
+
+reg [width-1:0] data_mem [depth-1:0];
+    
+assign dout = data_mem[adr];
+
+integer i;
+
+initial begin  
+      for(i=0;i<128;i=i+1)  
+          data_mem[i] <= 8'd0;  
+end  
+    
+always @ (posedge clk) begin
+	
+    if (we) 
+		data_mem[adr] <= din;
+		 
+end
+
+endmodule
