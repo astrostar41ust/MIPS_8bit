@@ -1,0 +1,18 @@
+`timescale 1ns / 1ps
+module Alu (input [7:0] operand1, 
+            input [7:0] operand2,
+            input [0:0] AluControl , //Function sel 1 bit
+            output reg [7:0] result, 
+            output reg zero);
+
+always @ (*) begin
+
+    case (AluControl)
+        1'b0: result = operand1 + operand2;  // ADD
+        1'b1: result = operand1 - operand2;  // SUB
+	 endcase
+         zero = (result==8'b0);
+    end
+	  
+endmodule
+
