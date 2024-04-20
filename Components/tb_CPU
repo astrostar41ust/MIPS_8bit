@@ -1,0 +1,38 @@
+`timescale 1ns / 1ps
+
+module tb_CPU;
+
+	// Inputs
+	reg clk;
+	reg reset;
+	
+	wire [7:0] Programcounter;
+	wire [7:0] Instruction;
+	wire [7:0] Result;
+	wire [2:0] WriteAddress;
+
+	// Instantiate the Unit Under Test (UUT)
+	CPU uut (
+		.clk(clk), 
+		.reset(reset),
+		.Programcounter(Programcounter),
+		.Instruction(Instruction),
+		.Result(Result),
+		.WriteAddress(WriteAddress)
+	);
+
+	always #8 clk=!clk;
+	initial begin
+      
+      
+      
+	clk=0;
+	reset=1;
+	#100; 
+	
+	reset=0;
+      
+  	end
+      
+endmodule
+
