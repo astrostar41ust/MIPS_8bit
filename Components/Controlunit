@@ -8,19 +8,23 @@ module Control_unit (input [1:0] Opcode,
 							output reg  RegDst,
 							output reg  RegWrite,
 							output reg  Jump,
-							output PCSrc,
+							output reg Branch,
+							output reg MemRead,
+							output  PCSrc,
 							output reg  [0:0] AluControl
 							);
 			 
 reg [7:0] container;
-reg Branch,B;
+
+
 
 always @(*) begin 
 
     case (Opcode) 
 	 
 			2'b00: begin                          // R-type
-                    container <= 8'b11000000;        
+                    container <= 8'b11000000;
+						  
                     case (Func)
                     1'b0: AluControl <= 1'b0;    // ADD
 						  1'b1: AluControl <= 1'b1;    // SUB
@@ -28,29 +32,30 @@ always @(*) begin
 						  end
 							  
 			2'b01: begin                          // ADDI
-                    container <= 8'b10100000;  
+                    container <= 8'b10100000; 
+												  
                     AluControl <= 1'b0; 
                     end  
 						  
 			2'b10: begin                          // BEQ
-                    container <= 8'b00010000;      
+                    container <= 8'b00010000;   
+											  
                     AluControl <= 1'b1; 
                     end
 						  
 			2'b11: begin                          // J
-						  container <= 8'b00000010;  
+						  container <= 8'b00000010; 
+						 					  
 						  AluControl <= 1'b0; 
 					  end 					  
-	 
-	 
-	 
-			  
+	
 	endcase
 	
-   {RegWrite,RegDst,ALUSrc,Branch,MemWrite,MemtoReg,Jump,B} = container;
+   {RegWrite,RegDst,ALUSrc,Branch,MemWrite,MemtoReg,Jump,MemRead} = container;
+
 	
 end
 
-	assign PCSrc = Branch & (Zero ^ B);
+	assign PCSrc = Branch & Zero;
 
 endmodule
