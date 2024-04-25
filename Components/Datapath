@@ -26,7 +26,7 @@ Dff #(8) pcregister(clk,reset, PC,PCNext);
 Adder #(8) pcadd(PC, 8'd1 ,PCplus);
 Adder #(8) pcaddsigned(extendedim,PCplus,PCbeforeBranch);
 Mux2 #(8) branchmux(PCplus , PCbeforeBranch, PCSrc, PCBranch);
-Mux2 #(8) jumpmux(PCBranch, {PCplus[7:6],Instr[5:0]}, Jump, PCNext);
+Mux2 #(8) jumpmux(PCBranch, {2'b00,Instr[5:0]}, Jump, PCNext);
 
 // Register File 
 Register_file register_file(clk,RegWrite, reset, Instr[5:4], Instr[3], WriteReg, MuxResult, Dataone,WriteData); 
