@@ -7,7 +7,7 @@ module CPU(input clk,
 			  output [2:0] WriteAddress);
                 
 wire [7:0] PC, Instr, ReadData, WriteData, AluResult;
-wire RegDst,RegWrite, ALUSrc, Jump, MemtoReg, PCSrc , Zero, MemWrite;
+wire RegDst,RegWrite, ALUSrc, Jump, MemtoReg,MemRead, PCSrc , Zero, MemWrite,Branch;
 wire [0:0] AluControl;
 wire [2:0] WriteReg;
    
@@ -17,7 +17,7 @@ Datapath datapath(clk, reset, RegDst,RegWrite, ALUSrc,Jump,MemtoReg ,
 
 
 Control_unit control_unit(Instr[7:6], Instr[0], Zero,MemtoReg,MemWrite,
-                        ALUSrc, RegDst, RegWrite, Jump, PCSrc, AluControl);
+                        ALUSrc, RegDst, RegWrite, Jump, Branch,MemRead, PCSrc, AluControl);
 
 Ram data_memory(clk,MemWrite,AluResult, WriteData, ReadData);
 
