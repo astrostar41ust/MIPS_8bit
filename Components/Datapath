@@ -24,7 +24,7 @@ wire [7:0] extendedimm, MuxResult, Dataone, aluop2;
 // PC 
 Dff #(8) pcregister(clk,reset, PC,PCNext);
 Adder #(8) pcadd(PC, 8'd1 ,PCplus);
-Adder #(8) pcaddsigned(extendedimmafter,PCplus,PCbeforeBranch);
+Adder #(8) pcaddsigned(extendedim,PCplus,PCbeforeBranch);
 Mux2 #(8) branchmux(PCplus , PCbeforeBranch, PCSrc, PCBranch);
 Mux2 #(8) jumpmux(PCBranch, {PCplus[7:6],Instr[5:0]}, Jump, PCNext);
 
