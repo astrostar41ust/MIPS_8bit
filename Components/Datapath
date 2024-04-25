@@ -7,26 +7,25 @@ module Datapath(input clk,
                 input Jump,
                 input MemtoReg,
                 input PCSrc,
-		input [0:0] AluControl,
+					 input [0:0] AluControl,
                 input [7:0] ReadData,
                 input [7:0] Instr,
                 output [7:0] PC,
                 output ZeroFlag,
                 output [7:0] WriteData, 
                 output [7:0] AluResult,
-		output [2:0] WriteReg);
+					 output [2:0] WriteReg);
 					 
-wire [7:0] extendedimmafter;
+
 wire [7:0] PCNext, PCplus, PCbeforeBranch, PCBranch;
 wire [7:0] extendedimm, MuxResult, Dataone, aluop2;
-//wire [2:0]WriteReg;
+
 
 // PC 
-Dff #(8) pcregister(clk,reset, PC,PCNext);
-Adder #(8) pcadd(PC, 8'd1 ,PCplus);
-Adder #(8) pcaddsigned(extendedim,PCplus,PCbeforeBranch);
-Mux2 #(8) branchmux(PCplus , PCbeforeBranch, PCSrc, PCBranch);
-Mux2 #(8) jumpmux(PCBranch, {2'b00,Instr[5:0]}, Jump, PCNext);
+Dff #(8) pcregister(clk,reset, PC,PCNext);//
+Adder #(8) pcadd(PC, 8'd1 ,PCplus);//
+Mux2 #(8) branchmux(PCplus , {5'b0,Instr[2:0]}, PCSrc, PCBranch);//
+Mux2 #(8) jumpmux(PCBranch, {2'b0,Instr[5:0]}, Jump, PCNext);//
 
 // Register File 
 Register_file register_file(clk,RegWrite, reset, Instr[5:4], Instr[3], WriteReg, MuxResult, Dataone,WriteData); 
